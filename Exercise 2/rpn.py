@@ -17,16 +17,11 @@ def evaluate(postfix_expression):
         else:
             operands.append(float(element))
 
-    operand1 = None
-    operand2 = None
-
     i = 0
     while len(operands) != 1:
         operand2 = operands.pop()
         operand1 = operands.pop()
-        operator = operators[i]
-        i += 1
-        match(operator):
+        match(operators[i]):
             case('+'):
                 operands.append(operand1 + operand2)
             case('*'):
@@ -35,8 +30,8 @@ def evaluate(postfix_expression):
                 operands.append(operand1 - operand2)
             case('/'):
                 operands.append(operand1 / operand2)
-                
-        return(operands[0])
+        i += 1         
+    return(operands[0])
 
 
 def parse_args(arglist):
