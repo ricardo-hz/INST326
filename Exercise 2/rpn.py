@@ -3,6 +3,9 @@ import sys
 #TODO: Make main method
 #TODO: Read from file
 #TODO: Print steps
+#BUG: The code cannot parse postfix expressions with operators in the middle
+    #of the expression. Example: 5 7 + 6 7 + * should evaluate to 156, code
+    #returns 100
 
 # Replace this comment with your implementations of the evaluate() and main()
 # functions.
