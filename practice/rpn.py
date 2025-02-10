@@ -1,44 +1,42 @@
 from argparse import ArgumentParser
 import sys
-
+#TODO: Make main method
+#TODO: Read from file
+#TODO: Print steps
 
 # Replace this comment with your implementations of the evaluate() and main()
 # functions.
 def evaluate(postfix_expression):
-    pfix = "5 2 3 + *"
-    pfix = pfix.split()
+    postfix_expression = postfix_expression.strip().split()
     possibleoperators = ['+','*','/','-']
     operators = []
     operands = []
-    for element in pfix:
+    for element in postfix_expression:
         if element in possibleoperators:
             operators.append(element)
         else:
             operands.append(float(element))
-            
-    print(operands)
-    print(operators)
 
     operand1 = None
     operand2 = None
 
     i = 0
     while len(operands) != 1:
-        #operand2 = operands.pop()
-        #operand1 = operands.pop()
+        operand2 = operands.pop()
+        operand1 = operands.pop()
         operator = operators[i]
         i += 1
         match(operator):
             case('+'):
-                operands.append(operands.pop() + operands.pop())
+                operands.append(operand1 + operand2)
             case('*'):
-                operands.append(operands.pop() * operands.pop())
+                operands.append(operand1 * operand2)
             case('-'):
-                operands.append(operands.pop() - operands.pop())
+                operands.append(operand1 - operand2)
             case('/'):
-                operands.append(operands.pop() / operands.pop())
+                operands.append(operand1 / operand2)
                 
-        print(f"{operand1}{operator}{operand2}")
+        return(operands[0])
 
 
 def parse_args(arglist):
