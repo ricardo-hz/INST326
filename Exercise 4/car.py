@@ -22,7 +22,7 @@ class Car:
                 180 indicates south, 270 indicates west. Default: 0.
             
         Side effects:
-            Creates attributes for a car object
+            Creates attributes for a car object.
         """
         
         self.x = x
@@ -35,6 +35,7 @@ class Car:
         Args:
             angle: A float representing the number of degrees by which the car
                 object should be turned.
+                
         Side effects:
             Modifies the car object's heading attribute.
         """
