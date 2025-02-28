@@ -13,10 +13,22 @@ LANGUAGES = [
     # "eus",
 ]
 
-
-# replace this comment with your implementations of est() or eus() and main()
-# (along with any helper functions, constants, etc. that you want to write)
 def est(number): #Assume number will be an int 0 - 999 999
+    """Spells out cardinal numbers in Estonian.
+    
+    Translates cardinally represented numbers to Estonian by subtracting place
+    values (hundred thousands, ten thousands, thousands, hundreds, tens, ones)
+    from the number and gradually concatenating the Estonian representation of 
+    those place values to a string.
+    
+    Args:
+        number (int): The number to be spelled out in Estonian.
+        
+    Returns:
+        Estonian representation of the passed number.
+    """
+    
+    #Holds Estonian translations for cardinal numbers
     numbers = {
         0 : 'null',
         1 : 'üks',
@@ -39,6 +51,7 @@ def est(number): #Assume number will be an int 0 - 999 999
         18 : 'kaheksateist',
         19 : 'üheksateist', 
         20 : 'kakskümmend',
+        21 : 'kakskümmend üks',
         30 : 'kolmkümmend',
         40 : 'nelikümmend',
         50 : 'viiskümmend',
@@ -55,12 +68,16 @@ def est(number): #Assume number will be an int 0 - 999 999
 
     #Handle 6 digit numbers
     if len(str(number)) == 6:
-        #Add first three digits of number to string
-        est += (f'{numbers[number // 100_000]}{numbers[100]} ')
-        number -= (number // 100_000 * 100_000)
-        #Add "Thousand" to end of string if the next digits are zero
-        if number == 0:
-            est += (f'{numbers[1000]} ')
+        #Add first digit of six digit number to string
+        if number // 100_000 * 100 in numbers:
+            est += (f'{numbers[number // 100_000 * 100]} ')
+            number -= (number // 100_000 * 100_000)
+        else:
+            est += (f'{numbers[number // 100_000]}{numbers[100]} ')
+            number -= (number // 100_000 * 100_000)
+            #Add "Thousand" to end of string if the next digits are zero
+            if number == 0:
+                est += (f'{numbers[1000]} ')
 
     # Handle 5 digit numbers 
     if len(str(number)) == 5:
@@ -80,7 +97,7 @@ def est(number): #Assume number will be an int 0 - 999 999
     if len(str(number)) == 4:
         #Handle 1000
         if number // 1000 * 1000 in numbers:
-            est += (f'{numbers[number // 1000 * 1000]} ')
+            est += (f'{numbers[1000]} ')
         #Handle all other 4 digit numbers
         else:
             est += (f'{numbers[number // 1000]} {numbers[1000]} ')
@@ -120,6 +137,22 @@ def est(number): #Assume number will be an int 0 - 999 999
     return(est.strip())
 
 def main(language_code, input_path, output_path):
+    """Reads numbers from a file and writes Estonian representations to a file.
+    
+    Args:
+        language_code (str): A three-letter ISO 639-3 language code.
+        input_path (str): the path to an input file containing one number
+            per line.
+        output_path (str): the path to an output file that you will create.
+    
+    Raises:
+        ValueError: An error occured determining the language_code. The only
+            valid language code for this program is 'est'.
+    
+    Side effects:
+        Reads a file and writes to a different file. Creates a file to write to
+            if the file does not exist at execution time.
+    """
     if language_code == 'est':
         with (open(input_path, 'r', encoding = 'UTF-8') as f_in, 
               open(output_path, 'w', encoding = 'UTF-8') as f_out):
