@@ -119,8 +119,14 @@ def est(number): #Assume number will be an int 0 - 999 999
         
     return(est.strip())
 
-def main():
-    pass#MUST BE IMPLEMENTED
+def main(language_code, input_path, output_path):
+    if language_code == 'est':
+        with (open(input_path, 'r', encoding = 'UTF-8') as f_in, 
+              open(output_path, 'w', encoding = 'UTF-8') as f_out):
+                for line in f_in:
+                    f_out.write(f'{line.strip()} = {est(int(line))}\n')
+    else:
+        raise ValueError()
 
 def parse_args(arglist):
     """Parse command-line arguments.
