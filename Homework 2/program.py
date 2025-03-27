@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 from json import load
 from sys import argv
-import relationships
+from relationships import relationships
 
 class Person():
     """Represents a person in a family
@@ -46,6 +46,13 @@ class Person():
         self.spouse = spouse
 
     def connections(self):
+        """Builds a dictionary representing connections between Person objects.
+        
+        Builds a dictionary in which each key is a Person object related to the 
+        current instance (self) through a combination of parent and/or spouse 
+        connections. The corresponding is a string that represents the path of
+        connections from self to that particular Person instance.
+        """
         # Create a dict of connections (cdict) where self is a key with an empty string as its value
         cdict = {
             self : ''
@@ -77,5 +84,44 @@ class Person():
                 person_queue.append(person)
         return cdict
 
-    def relation_to(self):
-        raise NotImplementedError
+    def relation_to(self, person):
+        """Determines the relation between self and a Person object
+        
+        Attributes:
+            person (Person) : The other Person object to check for a
+                relationship from.
+        
+        Returns:
+            None : self and person are not related.
+            'distant relative' (str) : self and other person are related, but
+                there is no kinship term in relationships.relationships.
+            kinship (str) : self and other person are related and a kinship
+                term exists in relationships.relationships.
+            """
+        # Determine the relationship between self and the other person
+        sdict = self.connections()
+        pdict = person.connections()
+        # Find keys shared by the two dictionaries.
+        shared_connections = set(sdict) & set(pdict)
+        # If no keys are shared, return none
+        if not shared_connections:
+            return None
+        
+        # Make an iterable of combined paths for each shared relative
+        paths = [f"{sdict[connection]}:{pdict[connection]}" for connection
+                 in shared_connections]
+        
+        # Find the path that contains the fewest characters, this is the 
+        # combined path to the LCR.
+        shortest_path = min(paths, key=len)
+        
+        # If the combined path to the LCR is a key in relationships.
+        # relationships, use self.gender to look up the appropriate kinship 
+        # term to describe how self is related to the other person; return 
+        # that term
+        # TODO: Check if this is a valid way to define relationships
+        if shortest_path in relationships:
+            kinship = relationships[shortest_path][self.gender]
+            return(kinship)
+        else:
+            return "distant relative"
