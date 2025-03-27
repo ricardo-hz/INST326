@@ -46,6 +46,22 @@ class Person():
         self.spouse = spouse
 
     def connections(self):
+        # Create a dict of connections (cdict) where self is a key with an empty string as its value
+        cdict = {
+            self : ''
+        }
+        
+        # Create a spouse connection list
+        person_queue = [self]
+        
+        # While the queue is empty
+        while not person_queue:
+            # Take the first Person object off the queue
+            person = person_queue.pop(0)
+            # Look up the path from self to person in dict
+            personpath = self.cdict[person.name]
+            # For each of person's parents
+            
         raise NotImplementedError
 
     def relation_to(self):
