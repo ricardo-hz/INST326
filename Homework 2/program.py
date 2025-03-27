@@ -125,3 +125,18 @@ class Person():
             return(kinship)
         else:
             return "distant relative"
+        
+class Family():
+    """Keeps track of all created Person instances.
+    
+    Attributes:
+        people (dict) : A dict in which each key is the name of a person and
+            each value is a corresponding Person object.
+    """
+    
+    def __init__(self):
+        raise NotImplementedError
+    
+    def relation(self):
+        raise NotImplementedError
+    
