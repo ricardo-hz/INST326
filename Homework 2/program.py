@@ -59,10 +59,23 @@ class Person():
             # Take the first Person object off the queue
             person = person_queue.pop(0)
             # Look up the path from self to person in dict
-            personpath = self.cdict[person.name]
+            personpath = cdict[person.name]
             # For each of person's parents
-            
-        raise NotImplementedError
+            for parent in person.parents:
+                if parent not in cdict:
+                    # The path to the parent is personpath plus a "P" at the 
+                    # end; add the parent as a new key in cdict with the path 
+                    # to the parent as the corresponding value
+                    cdict[parent] = f"{personpath}P"
+                    # Add the parent to the end of the queue
+                    person_queue.append(parent)
+            # If the value of personpath doesn’t contain "S" AND person has a 
+            # spouse AND person's spouse isn’t in cdict:
+            if ('S' not in personpath and person.spouse and person.spouse not in cdict):
+                cdict[person] = f"{personpath}S"#??????
+                # Add the spouse to the end of the queue
+                person_queue.append(person)
+        return cdict
 
     def relation_to(self):
         raise NotImplementedError
