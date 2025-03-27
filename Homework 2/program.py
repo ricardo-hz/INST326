@@ -134,7 +134,40 @@ class Family():
             each value is a corresponding Person object.
     """
     
-    def __init__(self):
+    def __init__(self, d):
+        """Does something???
+        
+        Attributes:
+            d (dict) : A dictionary with the following keys:
+                'individuals' (dict) : a dictionary where each key is the name
+                    of a person and each value is that person's gender 
+                    ('f', 'm', or 'n').
+                'parents' (dict) : a dictionary where each key is the name of a 
+                    person and each value is a list of the names of the person's
+                    parents. Every name in 'parents' is also found in 
+                    'individuals'.
+                'couples' (list) : a list of lists; each inner list contains two
+                    names. These two people are married to each other. Every 
+                    name in 'couples' is also found in 'individuals'.
+
+        """
+        
+        self.people = {
+            
+        }
+        
+        # For each person in the 'individuals' key, create an instance of Person
+        # with the name and gender of this person, and add the name and instance
+        # of Person to self.people
+        for individual in d["individuals"]:
+            name = individual
+            gender = individual[name]
+            person = Person(name,gender)
+            self.people[name] = person
+        
+        # For each person in the "parents" key:
+        
+         
         raise NotImplementedError
     
     def relation(self):
