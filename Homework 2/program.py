@@ -15,3 +15,15 @@ class Person():
     
     def __init__(self):
         raise NotImplementedError
+    
+    def add_parent(self):
+        raise NotImplementedError
+    
+    def set_spouse(self):
+        raise NotImplementedError
+
+    def connections(self):
+        raise NotImplementedError
+
+    def relation_to(self):
+        raise NotImplementedError
