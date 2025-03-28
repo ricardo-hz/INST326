@@ -19,10 +19,13 @@ class Person():
         Initializes a Person object by setting the name, gender, parents, and 
         spouse attributes of the object.
         
-        Attributes:
+        Args:
             name (str) : The name of the Person
             gender (str) : The gender of the Person represented as 'f', 'm', or
             'n'
+        
+        Side effects:
+            Creates a Person object
         """
         self.name = name
         self.gender = gender
@@ -52,6 +55,13 @@ class Person():
         current instance (self) through a combination of parent and/or spouse 
         connections. The corresponding is a string that represents the path of
         connections from self to that particular Person instance.
+        
+        Returns:
+            cdict (dict) - A dictionary in which each key is an instance of 
+                Person to whom self is related via a combination of parent 
+                and/or spouse connections, and the corresponding value is a 
+                string indicating a path of connections from self to that 
+                instance of Person
         """
         # Create a dict of connections (cdict) where self is a key with an empty string as its value
         cdict = {
@@ -87,7 +97,7 @@ class Person():
     def relation_to(self, person):
         """Determines the relation between self and a Person object
         
-        Attributes:
+        Args:
             person (Person) : The other Person object to check for a
                 relationship from.
         
@@ -137,7 +147,7 @@ class Family():
     def __init__(self, d):
         """Does something???
         
-        Attributes:
+        Args:
             d (dict) : A dictionary with the following keys:
                 'individuals' (dict) : a dictionary where each key is the name
                     of a person and each value is that person's gender 
@@ -149,7 +159,9 @@ class Family():
                 'couples' (list) : a list of lists; each inner list contains two
                     names. These two people are married to each other. Every 
                     name in 'couples' is also found in 'individuals'.
-
+        
+        Side effects:
+            Initializes a Family object
         """
         
         self.people = {
@@ -161,7 +173,8 @@ class Family():
         # of Person to self.people
         for individual in d["individuals"]:
             name = individual
-            gender = individual[name]
+            print(name)
+            gender = d["individuals"][name]
             person = Person(name,gender)
             self.people[name] = person
         
@@ -182,7 +195,7 @@ class Family():
     def relation(self, person1, person2):
         """Returns the relationship between two Person objects
         
-        Attributes:
+        Args:
             person1 (Person) : The person to check for relationships of
             person2 (Person) : The person to check for relations to person1
         
@@ -192,10 +205,30 @@ class Family():
         return person1.relation_to(person2)
 
 def main(path, person_name1, person_name2):
+    """Implement this docstring later
+    """
     raise NotImplementedError
 
 def parse_args(args):
-    raise NotImplementedError
+    """Implement this docstring later
+    """
+    #raise NotImplementedError
 
 if __name__ == "__main__":
-    raise NotImplementedError
+    """Implement this docstring later
+    """
+    #raise NotImplementedError
+
+d = {
+    "individuals" : {
+        "Sarah" : "f",
+        "Jacob" : "m",
+        "Paul" : "n"    
+    },
+    "parents" : {
+        "Paul" : ["Sarah", "Jacob"]
+    },
+    "couples" : [["Sarah", "Jacob"]]
+}
+
+family = Family(d)
