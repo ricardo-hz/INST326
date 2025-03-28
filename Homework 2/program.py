@@ -190,4 +190,12 @@ class Family():
             None if no kinship found, else a string expressing kinship
         """
         return person1.relation_to(person2)
-    
+
+def main(path, person_name1, person_name2):
+    raise NotImplementedError
+
+def parse_args(args):
+    raise NotImplementedError
+
+if __name__ == "__main__":
+    raise NotImplementedError
