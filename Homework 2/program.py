@@ -74,25 +74,25 @@ class Person():
         # While the queue is empty
         while not person_queue:
             # Take the first Person object off the queue
-            person = person_queue.pop(0)
+            person = self.person_queue.pop(0)
             # Look up the path from self to person in dict
-            personpath = cdict[person.name]
+            personpath = self.cdict[person.name]
             # For each of person's parents
             for parent in person.parents:
                 if parent not in cdict:
                     # The path to the parent is personpath plus a "P" at the 
                     # end; add the parent as a new key in cdict with the path 
                     # to the parent as the corresponding value
-                    cdict[parent] = f"{personpath}P"
+                    self.cdict[parent] = f"{personpath}P"
                     # Add the parent to the end of the queue
-                    person_queue.append(parent)
+                    self.person_queue.append(parent)
             # If the value of personpath doesn’t contain "S" AND person has a 
             # spouse AND person's spouse isn’t in cdict:
             if ('S' not in personpath and person.spouse and person.spouse not in cdict):
-                cdict[person] = f"{personpath}S"#??????
+                self.cdict[person] = f"{personpath}S"#??????
                 # Add the spouse to the end of the queue
-                person_queue.append(person)
-        return cdict
+                self.person_queue.append(person)
+        return self.cdict
 
     def relation_to(self, person):
         """Determines the relation between self and a Person object
@@ -133,8 +133,7 @@ class Person():
         if shortest_path in relationships:
             kinship = relationships[shortest_path][self.gender]
             return(kinship)
-        else:
-            return "distant relative"
+        return "distant relative"
         
 class Family():
     """Keeps track of all created Person instances.
@@ -173,7 +172,6 @@ class Family():
         # of Person to self.people
         for individual in d["individuals"]:
             name = individual
-            print(name)
             gender = d["individuals"][name]
             person = Person(name,gender)
             self.people[name] = person
@@ -192,7 +190,7 @@ class Family():
             husb.set_spouse(wife)
             wife.set_spouse(husb)
     
-    def relation(self, person1, person2):
+    def relation(self, person1, person2): #This method doesn't work, not passed Person objects???
         """Returns the relationship between two Person objects
         
         Args:
@@ -202,7 +200,7 @@ class Family():
         Returns:
             None if no kinship found, else a string expressing kinship
         """
-        return person1.relation_to(person2)
+        return self.people[person1].relation_to(self.people[person2])
 
 def main(path, person_name1, person_name2):
     """Implement this docstring later
@@ -219,6 +217,7 @@ if __name__ == "__main__":
     """
     #raise NotImplementedError
 
+"""
 d = {
     "individuals" : {
         "Sarah" : "f",
@@ -231,4 +230,7 @@ d = {
     "couples" : [["Sarah", "Jacob"]]
 }
 
+p = Person("name","m")
+
 family = Family(d)
+"""
