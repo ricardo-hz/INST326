@@ -166,9 +166,18 @@ class Family():
             self.people[name] = person
         
         # For each person in the "parents" key:
-        
-         
-        raise NotImplementedError
+        for person in d["parents"]:
+                # Look up the Person object corresponding to parent
+                p = self.people[person]
+                for parent in d["parents"][person]:
+                    parent = self.people[parent]
+                    p.add_parent(parent)
+                    
+        for couple in d["couples"]:
+            husb = self.people[couple[0]]
+            wife = self.people[couple[1]]
+            husb.set_spouse(wife)
+            wife.set_spouse(husb)
     
     def relation(self):
         raise NotImplementedError
