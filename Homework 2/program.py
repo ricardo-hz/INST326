@@ -179,6 +179,15 @@ class Family():
             husb.set_spouse(wife)
             wife.set_spouse(husb)
     
-    def relation(self):
-        raise NotImplementedError
+    def relation(self, person1, person2):
+        """Returns the relationship between two Person objects
+        
+        Attributes:
+            person1 (Person) : The person to check for relationships of
+            person2 (Person) : The person to check for relations to person1
+        
+        Returns:
+            None if no kinship found, else a string expressing kinship
+        """
+        return person1.relation_to(person2)
     
