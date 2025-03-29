@@ -63,36 +63,24 @@ class Person():
                 string indicating a path of connections from self to that 
                 instance of Person
         """
-        # Create a dict of connections (cdict) where self is a key with an empty string as its value
         cdict = {
             self : ''
         }
+        # Person objects whose spouse parent connections we need to follow
+        person_objects = [self]
         
-        # Create a spouse connection list
-        person_queue = [self]
-        
-        # While the queue is empty
-        while not person_queue:
-            # Take the first Person object off the queue
-            person = self.person_queue.pop(0)
-            # Look up the path from self to person in dict
-            personpath = self.cdict[person.name]
+        while person_objects:
+            person = person_objects.pop(0)
+            personpath = cdict[person]
             # For each of person's parents
             for parent in person.parents:
                 if parent not in cdict:
-                    # The path to the parent is personpath plus a "P" at the 
-                    # end; add the parent as a new key in cdict with the path 
-                    # to the parent as the corresponding value
-                    self.cdict[parent] = f"{personpath}P"
-                    # Add the parent to the end of the queue
-                    self.person_queue.append(parent)
-            # If the value of personpath doesn’t contain "S" AND person has a 
-            # spouse AND person's spouse isn’t in cdict:
-            if ('S' not in personpath and person.spouse and person.spouse not in cdict):
-                self.cdict[person] = f"{personpath}S"#??????
-                # Add the spouse to the end of the queue
-                self.person_queue.append(person)
-        return self.cdict
+                    cdict[parent] = f"{personpath}P"
+                    person_objects.append(parent)
+            if "S" not in personpath and person.spouse and (person.spouse not in cdict):
+                cdict[person.spouse] = f"{personpath}S"
+                person_objects.append(person.spouse)
+        return cdict
 
     def relation_to(self, person):
         """Determines the relation between self and a Person object
@@ -217,7 +205,7 @@ if __name__ == "__main__":
     """
     #raise NotImplementedError
 
-"""
+
 d = {
     "individuals" : {
         "Sarah" : "f",
@@ -230,7 +218,9 @@ d = {
     "couples" : [["Sarah", "Jacob"]]
 }
 
-p = Person("name","m")
-
+p = Person("Paul","n")
+s = Person("Sarah", "f")
+p.add_parent(s)
 family = Family(d)
-"""
+
+p.connections()
