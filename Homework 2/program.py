@@ -203,6 +203,12 @@ def main(path, person_name1, person_name2):
 def parse_args(args):
     """Implement this docstring later
     """
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument("filepath", help = "A help message")
+    arg_parser.add_argument("name1", help = "A help message")
+    arg_parser.add_argument("name2", help = "A help message")
+    
+    return arg_parser.parse_args(args)
     #raise NotImplementedError
 
 if __name__ == "__main__":
