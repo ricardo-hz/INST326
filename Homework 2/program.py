@@ -193,7 +193,12 @@ class Family():
 def main(path, person_name1, person_name2):
     """Implement this docstring later
     """
-    raise NotImplementedError
+    with open(path, 'r', encoding = "UTF-8") as f:
+        familydata = load(f) #Load json
+        family = Family(familydata)
+        relation = family.relation(person_name1, person_name2)
+        print(f"{person_name1} is not related to {person_name2}" if not relation
+               else f"{person_name1} is {person_name2}'s {relation}")
 
 def parse_args(args):
     """Implement this docstring later
