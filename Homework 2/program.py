@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 from json import load
-from sys import argv
+import sys
 from relationships import relationships
 
 class Person():
@@ -214,6 +214,8 @@ def parse_args(args):
 if __name__ == "__main__":
     """Implement this docstring later
     """
+    args = parse_args(sys.argv[1:])
+    main(args.filepath, args.name1, args.name2)
     #raise NotImplementedError
 
 
