@@ -35,7 +35,7 @@ class Person():
     def add_parent(self, parent):
         """Adds a parent to the parents list of a Person object.
         
-        Attributes:
+        Args:
             parent (Person) : The parent to be added
         """
         self.parents.append(parent)
@@ -43,7 +43,7 @@ class Person():
     def set_spouse(self, spouse):
         """Sets the spouse attribute of a Person object.
         
-        Attributes:
+        Args:
             spouse (Person) : The person's spouse.
         """
         self.spouse = spouse
@@ -72,11 +72,12 @@ class Person():
         while person_objects:
             person = person_objects.pop(0)
             personpath = cdict[person]
-            # For each of person's parents
             for parent in person.parents:
+                # Add parent
                 if parent not in cdict:
                     cdict[parent] = f"{personpath}P"
                     person_objects.append(parent)
+            # Add spouse
             if "S" not in personpath and person.spouse and (person.spouse not in cdict):
                 cdict[person.spouse] = f"{personpath}S"
                 person_objects.append(person.spouse)
@@ -113,11 +114,7 @@ class Person():
         # combined path to the LCR.
         shortest_path = min(paths, key=len)
         
-        # If the combined path to the LCR is a key in relationships.
-        # relationships, use self.gender to look up the appropriate kinship 
-        # term to describe how self is related to the other person; return 
-        # that term
-        # TODO: Check if this is a valid way to define relationships
+        # Determine the kinship of the shortest path
         if shortest_path in relationships:
             kinship = relationships[shortest_path][self.gender]
             return(kinship)
@@ -178,7 +175,7 @@ class Family():
             husb.set_spouse(wife)
             wife.set_spouse(husb)
     
-    def relation(self, person1, person2): #This method doesn't work, not passed Person objects???
+    def relation(self, person1, person2): 
         """Returns the relationship between two Person objects
         
         Args:
@@ -191,7 +188,18 @@ class Family():
         return self.people[person1].relation_to(self.people[person2])
 
 def main(path, person_name1, person_name2):
-    """Implement this docstring later
+    """Prints the relationship between two Person objects which exist in path
+    
+    Args:
+        path (str): The path to a JSON file with the structure specified in
+            family.json
+        person_name1 (str) : The name of a person defined in the JSON file
+        person_name2 (str) : The name of a second person defined in the JSON 
+            file
+    
+    Side effects:
+        - Reads a file defined in path
+        - Prints to the screen
     """
     with open(path, 'r', encoding = "UTF-8") as f:
         familydata = load(f) #Load json
@@ -201,39 +209,24 @@ def main(path, person_name1, person_name2):
                else f"{person_name1} is {person_name2}'s {relation}")
 
 def parse_args(args):
-    """Implement this docstring later
+    """Parse command-line arguments.
+    
+    Args:
+        arglist (list of str): list of command-line arguments.
+
+    Returns:
+        The parsed arguments as a namespace 
     """
     arg_parser = ArgumentParser()
-    arg_parser.add_argument("filepath", help = "A help message")
-    arg_parser.add_argument("name1", help = "A help message")
-    arg_parser.add_argument("name2", help = "A help message")
+    arg_parser.add_argument("filepath", help = f"The path to a JSON file with "
+                            "the structure specified in family.json")
+    arg_parser.add_argument("name1", help = f"The name of a person defined in "
+                            "the JSON file")
+    arg_parser.add_argument("name2", help = f"The name of a second person "
+                            "defined in the JSON file")
     
     return arg_parser.parse_args(args)
-    #raise NotImplementedError
 
 if __name__ == "__main__":
-    """Implement this docstring later
-    """
     args = parse_args(sys.argv[1:])
     main(args.filepath, args.name1, args.name2)
-    #raise NotImplementedError
-
-
-d = {
-    "individuals" : {
-        "Sarah" : "f",
-        "Jacob" : "m",
-        "Paul" : "n"    
-    },
-    "parents" : {
-        "Paul" : ["Sarah", "Jacob"]
-    },
-    "couples" : [["Sarah", "Jacob"]]
-}
-
-p = Person("Paul","n")
-s = Person("Sarah", "f")
-p.add_parent(s)
-family = Family(d)
-
-p.connections()
