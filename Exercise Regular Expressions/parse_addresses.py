@@ -6,6 +6,18 @@ import sys
 # replace this comment with your implementation of the Address class
 # and read_addresses() function. Uncomment the __repr__() method below
 # and include it in your Address class.
+class Address():
+    pattern = r"(^\S+) (\D+), (\D+) ([A-Z]{2}) (\d{5})" # Add names for grouping??
+    def __init__(self, address):
+        match = re.search(Address.pattern, address)
+        if match:
+            #self.address = address
+            self.house_number = match.group(1)
+            self.street = match.group(2)
+            self.city = match.group(3)
+            self.zip = match.group(4)
+        else:
+            raise ValueError("The string could not be parsed")
 
     # def __repr__(self):
     #     """Return a formal representation of the Address object."""
