@@ -45,16 +45,17 @@ class PhoneNumer():
         # If the number is not valid, it should raise a ValueError
         # If area code or the exchange code begins with 0 or 1, or ends with 1
 
-pattern = r"""
-(?x) # Extended
+pattern = """
+(?x)
 ^
-(?:\d?\s?\W?) #Checks for cc and leading parentheses
-(?P<area>\d{3}) #Finds area code
-\W?\s? #Checks for closed paren and space
-#\W? #Checks for space
-(?P<exchange>\w{3})#Checks for exchange code
-\W*
-(?P<line_num>\w{4})#Checks for line number
+(?:1?\s?\W?)? #Checks for cc and leading parentheses
+(?P<area>\w{3}) #Finds area code
+#\W?\s? #Checks for closed paren and space
+[\s\W]*
+(?P<exchange>\w{2,7})#Checks for exchange code
+#\W?
+[\s\W]*
+(?P<line_num>\w{1,5})#Checks for line number
 $
 """
 
