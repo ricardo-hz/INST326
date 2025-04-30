@@ -59,6 +59,23 @@ pattern = """
 $
 """
 
+def shift_numbers(number):
+    if len(number) != 10:
+        raise ValueError(f"{number} must be 10 digits long.")
+    
+    if isinstance(number, int):
+        number = str(number)
+    
+    for digit in number:
+        if not digit.isalnum():
+            number = number.replace(digit, "")
+    
+    return {
+        "area_code" : number[0:3],
+        "exchange_number" : number[3,6],
+        "line_number" : number[6,11]
+    }
+
 
 def main(path):
     """Read data from path and print results.
