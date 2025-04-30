@@ -32,21 +32,24 @@ LETTER_TO_NUMBER = {
     'Z': '9'
 }
 
+def shift_numbers(number):
+    #if len(number) != 10:
+        #raise ValueError(f"{number} must be 10 digits long.")
+    
+    if isinstance(number, int):
+        number = str(number)
+    
+    for digit in number:
+        if not digit.isalnum():
+            number = number.replace(digit, "")
+    
+    return {
+        "area_code" : number[0:3],
+        "exchange_number" : number[3:6],
+        "line_number" : number[6:11]
+    }
 
-# Replace this comment with your implementation of the PhoneNumber class and
-# the `read_numbers()` function.
-class PhoneNumer():
-    def __init__(self, ph_num):
-        # If the argument is not a string or an integer, your class should 
-        # raise a TypeError
-        if not isinstance(ph_num, (str | int)):
-            raise TypeError
-        
-        # If the number is not valid, it should raise a ValueError
-        # If area code or the exchange code begins with 0 or 1, or ends with 1
-
-pattern = """
-(?x)
+pattern = r"""(?x)
 ^
 (?:1?\s?\W?)? #Checks for cc and leading parentheses
 (?P<area>\w{3}) #Finds area code
@@ -59,23 +62,42 @@ pattern = """
 $
 """
 
-def shift_numbers(number):
-    if len(number) != 10:
-        raise ValueError(f"{number} must be 10 digits long.")
+# Replace this comment with your implementation of the PhoneNumber class and
+# the `read_numbers()` function.
+class PhoneNumber():
+    def __init__(self, ph_num):
+        # If the argument is not a string or an integer, your class should 
+        # raise a TypeError
+        if not isinstance(ph_num, (str | int)):
+            raise TypeError
+        
+        # If the number is not valid, it should raise a ValueError
+        # If area code or the exchange code begins with 0 or 1, or ends with 1
+        if not re.match(pattern, ph_num):
+            raise ValueError ("Here 1")
+        else:
+            match = re.match(pattern, ph_num)
+            ph_num = match.group("area") + match.group("exchange") + match.group("line_num")
+            ph_num = shift_numbers(ph_num)
+            
+        if (any([
+            ph_num["area_code"].startswith("0"),
+            ph_num["area_code"].startswith("1"),
+            ph_num["area_code"].endswith("11"),
+            ph_num["exchange_number"].startswith("0"),
+            ph_num["exchange_number"].startswith("1"),
+            ph_num["exchange_number"].endswith("11")
+            ])):
+            raise ValueError("Here 2")
+        
+        self.area_code = ph_num["area_code"]
+        self.exchange_code = ph_num["exchange_number"]
+        self.line_number = ph_num["line_number"]
+        
+    def __repr__():
+        pass
+    # This method needs to convert the letters to numbers
     
-    if isinstance(number, int):
-        number = str(number)
-    
-    for digit in number:
-        if not digit.isalnum():
-            number = number.replace(digit, "")
-    
-    return {
-        "area_code" : number[0:3],
-        "exchange_number" : number[3,6],
-        "line_number" : number[6,11]
-    }
-
 
 def main(path):
     """Read data from path and print results.
