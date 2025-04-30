@@ -35,6 +35,28 @@ LETTER_TO_NUMBER = {
 
 # Replace this comment with your implementation of the PhoneNumber class and
 # the `read_numbers()` function.
+class PhoneNumer():
+    def __init__(self, ph_num):
+        # If the argument is not a string or an integer, your class should 
+        # raise a TypeError
+        if not isinstance(ph_num, (str | int)):
+            raise TypeError
+        
+        # If the number is not valid, it should raise a ValueError
+        # If area code or the exchange code begins with 0 or 1, or ends with 1
+
+pattern = r"""
+(?x) # Extended
+^
+(?:\d?\s?\W?) #Checks for cc and leading parentheses
+(?P<area>\d{3}) #Finds area code
+\W?\s? #Checks for closed paren and space
+#\W? #Checks for space
+(?P<exchange>\w{3})#Checks for exchange code
+\W*
+(?P<line_num>\w{4})#Checks for line number
+$
+"""
 
 
 def main(path):
