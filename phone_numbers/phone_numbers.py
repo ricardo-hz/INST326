@@ -42,6 +42,9 @@ def shift_numbers(number):
     for digit in number:
         if not digit.isalnum():
             number = number.replace(digit, "")
+            
+        if digit.isalpha():
+            number = number.replace(digit, LETTER_TO_NUMBER[digit])
     
     return {
         "area_code" : number[0:3],
@@ -94,8 +97,24 @@ class PhoneNumber():
         self.exchange_code = ph_num["exchange_number"]
         self.line_number = ph_num["line_number"]
         
-    def __repr__():
-        pass
+    def __repr__(self):
+        return(f"{self.area_code}{self.exchange_code}{self.line_number}")
+    
+    def __int__(self):
+        return(int(self.__repr__()))
+    
+    def __lt__(self, other):
+        return(int(self) < int(other))
+    
+n1 = PhoneNumber("(234) 567-8901")
+n2 = PhoneNumber("1-800-POTATO-3")
+n3 = PhoneNumber("703*242*0731")
+
+print(n1 < n2)
+print(n2 < n3)
+exit()
+    #def __repr__():
+     #   pass
     # This method needs to convert the letters to numbers
     
 
