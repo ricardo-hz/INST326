@@ -35,37 +35,39 @@ LETTER_TO_NUMBER = {
 def shift_numbers(number):
     if isinstance(number, int):
         number = str(number)
-    
+        
     for digit in number:
         if not digit.isalnum():
             number = number.replace(digit, "")
-            print(number)
-        
+            
         if digit.isalpha():
             number = number.replace(digit, LETTER_TO_NUMBER[digit])
         
-    if len(number) == 11 and number[0] == "1":
+    if len(number) == 11 and number[0] == 1:
         number = number[1:]
-        
-    if len(number) != 10:
-        raise ValueError(f"{number} must contain 10 digits. It contains {len(number)}.")
     
-    number = {
-    "area_code" : number[0:3],
-    "exchange_code" : number[3:6],
-    "line_number" : number[6:]
-    }
+    if len(number) != 10:
+        raise ValueError(f"{number} must be 10 digits long.")
         
-    if (any([
-        number["area_code"].startswith("0"),
-        number["area_code"].startswith("1"),
-        number["area_code"].endswith("11"),
-        number["exchange_code"].startswith("0"),
-        number["exchange_code"].startswith("1"),
-        number["exchange_code"].endswith("11")
-        ])):
-        raise ValueError("Invalid Phone Number entered")
-    return number
+    return {
+        "area_code" : number[0:3],
+        "exchange_number" : number[3:6],
+        "line_number" : number[6:11]
+    }
+
+pattern =r"""(?x)
+^
+(?:\+?1? #Checks for leading +1
+\s?\S?\W?)? #Checks for cc and leading parentheses
+(?P<area>\w{3}) #Finds area code
+#\W?\s? #Checks for closed paren and space
+[\s\W]*
+(?P<exchange>\w{2,7})#Checks for exchange code
+#\W?
+[\s\W]*
+(?P<line_num>\w{1,5})#Checks for line number
+$
+"""
 
 # Replace this comment with your implementation of the PhoneNumber class and
 # the `read_numbers()` function.
@@ -76,25 +78,37 @@ class PhoneNumber():
         # If the argument is not a string or an integer, your class should 
         # raise a TypeError
         if not isinstance(ph_num, (str | int)):
-             raise TypeError("Here 3")
-        try:
+            raise TypeError("Here 3")
+        
+
+        # If the number is not valid, it should raise a ValueError
+        # If area code or the exchange code begins with 0 or 1, or ends with 1
+        if not re.match(pattern, ph_num):
+            raise ValueError ("Here 1")
+        else:
+            match = re.match(pattern, ph_num)
+            ph_num = match.group("area") + match.group("exchange") + match.group("line_num")
             ph_num = shift_numbers(ph_num)
-        except:
-            raise
+            
+        if (any([
+            ph_num["area_code"].startswith("0"),
+            ph_num["area_code"].startswith("1"),
+            ph_num["area_code"].endswith("11"),
+            ph_num["exchange_number"].startswith("0"),
+            ph_num["exchange_number"].startswith("1"),
+            ph_num["exchange_number"].endswith("11")
+            ])):
+            raise ValueError("Here 2")
         
         self.area_code = ph_num["area_code"]
-        self.exchange_code = ph_num["exchange_code"]
+        self.exchange_code = ph_num["exchange_number"]
         self.line_number = ph_num["line_number"]
-    
-    def __str__(self):
-        return(f"({self.area_code}) {self.exchange_code}-{self.line_number}")
+        
+    def __repr__(self):
+        return(f"{self.area_code}{self.exchange_code}{self.line_number}")
     
     def __int__(self):
-        return(int(f"{self.area_code}{self.exchange_code}{self.line_number}"))
-    
-    def __repr__(self):
-        return(f"PhoneNumber('{int(self)}')")
-    
+        return(int(self.__repr__()))
     
     def __lt__(self, other):
         return(int(self) < int(other))
@@ -108,8 +122,10 @@ def read_numbers(path):
             try:
                 number = PhoneNumber(number)
             except:
-                raise
+                continue
             contact_info.append((name, number))
+            print(type(number))
+    print(sorted(contact_info, key = lambda contact: contact[1]))
     return sorted(contact_info, key = lambda contact: contact[1])
 
 def main(path):
